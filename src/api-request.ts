@@ -1,8 +1,11 @@
+import { Environment } from "./Environment";
+
 export const getApiRequest = async function(
     url: string, method: string, body: any, accessToken: string): Promise<any> {
 
+    const env = new Environment();
     url = url.startsWith('/') ? url : `/${url}`;
-    const response = await fetch(process.env.AUTH0_API_URL + url, {
+    const response = await fetch(env.auth0ApiUrl() + url, {
       method,
       headers: {
         'Content-Type': 'application/json',

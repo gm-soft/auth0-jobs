@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node script.ts",
+    "trigger-export-job": "ts-node src/trigger-export-job.ts",
+    "check-export-job": "ts-node src/check-job.ts",
+    "migration": "ts-node src/migration-with-file-job.ts",
     "test-settings": "ts-node src/check-settings-job.ts"
   },
   "keywords": [],
@@ -13,5 +15,8 @@
   "devDependencies": {
     "@types/node": "^20.11.20",
     "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5"
   }
 }

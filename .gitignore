@@ -130,3 +130,5 @@ dist
 .pnp.*
 *.csv
 *.csv
+*/.DS_Store
+.DS_Store

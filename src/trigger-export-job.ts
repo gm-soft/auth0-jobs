@@ -1,11 +1,14 @@
+import { Environment } from "./Environment";
 import { getApiRequest } from "./api-request";
+import { SettingsFile } from "./settings-file";
 import { getAccessToken } from "./token";
 
 const downloadUserExportFile = async function(
     accessToken: string,
     connectionId: string): Promise<any> {
-  
-    const response = await fetch(process.env.AUTH0_API_URL + '/api/v2/jobs/users-exports', {
+
+    const env = new Environment();
+    const response = await fetch(env.auth0ApiUrl() + '/api/v2/jobs/users-exports', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -41,6 +44,10 @@ const createUserExportJob = async function(): Promise<any> {
     const connections = await getApiRequest('/api/v2/connections', 'GET', null, accessToken);
   
     const response = await downloadUserExportFile(accessToken, connections[0].id);
+
+    const settings = new SettingsFile();
+    settings.saveExportJobId(response.id);
+
     return response;
 }
 

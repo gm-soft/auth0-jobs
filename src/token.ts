@@ -1,13 +1,18 @@
+import { Environment } from "./Environment";
+
 export const getAccessToken = async function(): Promise<any | string> {
 
+    const env = new Environment();
     const details = {
-      client_id: process.env.AUTH0_CLIENT_ID,
-      client_secret: process.env.AUTH0_CLIENT_SECRET,
-      audience: process.env.AUTH0_AUDIENCE,
+      client_id: env.auth0ClientId(),
+      client_secret: env.auth0ClientSecret(),
+      audience: env.auth0Audience(),
       grant_type: 'client_credentials'
     };
+
+    console.log(`Details`, details);
   
-    const response = await fetch(process.env.AUTH0_API_URL + '/oauth/token', {
+    const response = await fetch(env.auth0ApiUrl() + '/oauth/token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
