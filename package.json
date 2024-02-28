@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "ts-node script.ts"
+    "start": "ts-node script.ts",
+    "test-settings": "ts-node src/check-settings-job.ts"
   },
   "keywords": [],
   "author": "",

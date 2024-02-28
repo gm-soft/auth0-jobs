@@ -1,5 +1,5 @@
-import { getApiRequest } from "../api-request";
-import { getAccessToken } from "../token";
+import { getApiRequest } from "./api-request";
+import { getAccessToken } from "./token";
 
 const downloadUserExportFile = async function(
     accessToken: string,
