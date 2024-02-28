@@ -1,58 +1,12 @@
 import { readFileSync } from 'fs';
+import { getAccessToken } from './src/token';
+import { getApiRequest } from './src/api-request';
 
-// Define the API URL
-const auth0Api = process.env.AUTH0_API_URL;
+const downloadUserExportFile = async function(
+  accessToken: string,
+  connectionId: string): Promise<any> {
 
-const getAccessToken = async function(): Promise<any | string> {
-
-  const details = {
-    client_id: process.env.AUTH0_CLIENT_ID,
-    client_secret: process.env.AUTH0_CLIENT_SECRET,
-    audience: process.env.AUTH0_AUDIENCE,
-    grant_type: 'client_credentials'
-  };
-
-  const response = await fetch(auth0Api + '/oauth/token', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-      'Accept': 'application/json'
-    },
-    body: `grant_type=client_credentials&client_id=${details.client_id}&client_secret=${details.client_secret}&audience=${details.audience}/api/v2/`
-  });
-
-  if (response.status != 200) {
-    console.log(await response.text());
-    throw new Error(`Failed to fetch: ${response.status} - ${response.statusText}`);
-  }
-
-  const responseObject = await response.json() as { access_token: string };
-  return responseObject.access_token || null;
-}
-
-const getApiRequest = async function(url: string, method: string, body: any, accessToken: string): Promise<any> {
-
-  url = url.startsWith('/') ? url : `/${url}`;
-  const response = await fetch(auth0Api + url, {
-    method,
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`
-    },
-    body: body != null ? JSON.stringify(body) : null
-  });
-
-  if (response.status != 200) {
-    console.log(await response.text());
-    throw new Error(`Failed to fetch: ${response.status} - ${response.statusText}`);
-  }
-
-  return await response.json();
-}
-
-const downloadUserExportFile = async function(accessToken: string, connectionId: string): Promise<any> {
-
-  const response = await fetch(auth0Api + '/api/v2/jobs/users-exports', {
+  const response = await fetch(process.env.AUTH0_API_URL + '/api/v2/jobs/users-exports', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
